@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace StarWarsAPI.Models
 {
@@ -55,10 +56,18 @@ namespace StarWarsAPI.Models
         public async Task<List<Person>> GetPeople()
         {
             var client = GetClient();
-            var response = await client.GetAsync("people/");
-            string personJSON = await response.Content.ReadAsStringAsync();
-            PersonRootobject peopleRoot = JsonSerializer.Deserialize<PersonRootobject>(personJSON);
-            List<Person> people = peopleRoot.results.ToList<Person>();
+            client.BaseAddress = null;
+            List<Person> people = new List<Person>();
+            string nextUri = "https://swapi.dev/api/people/";
+            do
+            {
+                Uri uri = new Uri(nextUri);
+                var response = await client.GetAsync(uri);
+                string personJSON = await response.Content.ReadAsStringAsync();
+                PersonRootobject peopleRoot = JsonSerializer.Deserialize<PersonRootobject>(personJSON);
+                people.AddRange(peopleRoot.results.ToList<Person>());
+                nextUri = peopleRoot.next;
+            } while (nextUri != null && nextUri != "");
             return people;
         }
         public async Task<Planet> GetPlanet(int planetId)
