@@ -1,0 +1,33 @@
+﻿@model PersonPlanetViewModel
+
+<div>
+    <table>
+        <tr>
+            @if (Model != null && Model.PeopleNames != null)
+            {
+                <td>
+                    <form action="/Home/GetPersonByName" method="post">
+                        @Html.DropDownList("PersonName",
+                            new SelectList(Model.PeopleNames)
+                            )
+                        <input type="submit" value="Find Person" />
+                    </form>
+                </td>
+            }
+            <td>
+                <form action="/Home/GetPersonById" method="post">
+                    <input type="text" name="id" value="" />
+                    <input type="submit" value="Find Person" />
+                </form>
+            </td>
+            <td> | </td>
+            <td>
+                <form action="/Home/GetPlanetById" method="post">
+                    <input type="text" name="id" value="" />
+                    <input type="submit" value="Find Planet" />
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+<br />

@@ -1,0 +1,25 @@
+﻿
+@model PersonPlanetViewModel
+
+<h1>Result</h1>
+<br />
+
+@if (Model != null && Model.person != null)
+{
+    List<string> species = Model.person.species.ToList();
+<div>
+    <p>
+        <h3>Person: @Model.person.name</h3>
+        <p>Birth Year: @Model.person.birth_year</p>
+        <p><a href="@Model.person.homeworld">Homeworld</a></p>
+    </p>
+</div>
+}
+@if (Model != null && Model.planet != null)
+{
+    <div>
+        <p>
+            <h3>Planet: @Model.planet.name</h3>
+        </p>
+    </div>
+}
